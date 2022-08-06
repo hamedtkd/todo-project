@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <title>Document</title>
+</head>
+<body class="container">
+    <header>
+        <h1 class="text-white">TODO Project</h1>
+    </header>
+    <div class="d-flex justify-content-center ">   
+        <div class="alert pb-0" id="alertTodo">
+            <p class="flex-grow-1 text-center">
+                enter a title
+            </p>
+            <button class="btn btn-close"></button>
+        </div>
+    </div>
+    <form class="d-flex flex-column gap-3 py-5 form-control mt-2" action="#">
+        <label for="todoTitel" class="fs-4"> Title </label>
+        <input class="input-group-text  w-50" type="text" id="todoTitel" placeholder="Enter a title " autoComplete="off">
+        <label for="todoDesc" class="fs-4"> Discription</label>
+        <textarea class="w-50 input-group-text " id="todoDesc" placeholder="Enter a discription" ></textarea>
+        <button id="todoSubmit" class="btn btn-success w-25  ">Submit</button>
+    </form>
+  
+    <ul class="ps-0 d-flex flex-column gap-2" id="mainTodo"></ul>
+    
+  
+  
+
+
+    <script src="index.js">
+
+    </script>
+</body>
+</html>
