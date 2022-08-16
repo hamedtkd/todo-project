@@ -3,11 +3,9 @@ const todoDesc = document.getElementById("todoDesc");
 const todoSubmit = document.getElementById("todoSubmit");
 const maintodo = document.getElementById("mainTodo");
 const alertTodo = document.getElementById("alertTodo");
-
 let savedLcTodo = localStorage.getItem("todolist");
 const parseSavedTodo = JSON.parse(savedLcTodo) || [];
 const savedTodo = [...parseSavedTodo];
-
 
 const alertForNull = (massage, option) => {
 
@@ -23,7 +21,6 @@ const alertForNull = (massage, option) => {
 
    }, option.time | 3000);
 }
-
 
 const handelNewTodo = (event) => {
    event.preventDefault();
@@ -73,14 +70,8 @@ const creatNewTodo = (title, desc, id, cheked) => {
    inputParagraph.disabled = true;
    inputParagraph.className = 'INPUT-TITLE';
    pargraph.appendChild(inputParagraph);
-
    inputParagraph.value =  desc;
-
-
-
-
-
-   
+ 
 
    const deleteBtn = document.createElement("button");
    deleteBtn.innerHTML = actionBtns.delete;
@@ -100,20 +91,13 @@ const creatNewTodo = (title, desc, id, cheked) => {
    const divisonOfHead = document.createElement("div")
    const divisonOfbtns = document.createElement("div")
 
-
-
    listItem.appendChild(divisonOfHead);
    listItem.appendChild(divisonOfbtns);
-
-
-
    divisonOfHead.appendChild(headTitleTodo);
    divisonOfHead.appendChild(pargraph);
    divisonOfbtns.appendChild(deleteBtn)
    divisonOfbtns.appendChild(editBtn)
-
    divisonOfbtns.appendChild(updateBtn)
-   //    updateBtn.appendChild(tick)
 
    maintodo.appendChild(listItem);
    listItem.className = "list-item-todo"
@@ -121,7 +105,6 @@ const creatNewTodo = (title, desc, id, cheked) => {
    deleteBtn.className = "btn btn-outline-danger px-3"
    updateBtn.className = "btn btn-outline-success px-3"
    editBtn.className = "btn btn-outline-dark  px-3 "
-   //    tick.className = " btn"
 
 }
 
@@ -130,10 +113,6 @@ savedTodo.forEach(todo => {
    creatNewTodo(todo.todoTitleHead, todo.todoDescpar, todo.id, todo.cheked)
 })
 
-
-
-// // import { alertForNull } from "./madual/components/tostify.js";
-// import {handelNewTodo} from "./moduale/controler/handelNewTodo.js"
 
 todoSubmit.addEventListener("click", handelNewTodo)
 
@@ -162,15 +141,16 @@ maintodo.addEventListener('click', (e) => {
 
 
    } else if (e.target.innerText === "Edit") {
-
       const parentEl = e.target.parentElement.parentElement;
     
-
       parentEl.children[0].children[0].children[0].disabled = false;
+      parentEl.children[0].children[1].children[0].disabled = false
       parentEl.children[0].children[0].children[0].style.width = "100%"
       parentEl.children[0].children[0].children[0].style.backgroundColor = "#e9ecef"
+      parentEl.children[0].children[1].children[0].style.width = "100%"
+      parentEl.children[0].children[1].children[0].style.backgroundColor = "#e9ecef"
       parentEl.children[0].children[0].children[0].select();
-      
+   
       e.target.innerText = "Save";
       e.target.style.backgroundColor = "green"
       e.target.style.color = "white"
@@ -182,6 +162,7 @@ maintodo.addEventListener('click', (e) => {
          const updateFiltredTodo = {
             ...filtredTodo[0],
             todoTitleHead: parentEl.children[0].children[0].children[0].value
+            ,todoDescpar: parentEl.children[0].children[1].children[0].value
          };
 
          const filtredTodos = savedTodo.filter(
@@ -189,38 +170,8 @@ maintodo.addEventListener('click', (e) => {
          );
          const updateFilteredTodoSave = [...filtredTodos, updateFiltredTodo];
          localStorage.setItem("todolist", JSON.stringify(updateFilteredTodoSave));
-
-         parentEl.children[0].children[1].children[0].disabled = false
-         parentEl.children[0].children[1].children[0].style.width = "100%"
-         parentEl.children[0].children[1].children[0].style.backgroundColor = "#e9ecef"
-         parentEl.children[0].children[1].children[0].select();
-         e.target.innerText = "Save"
-         e.target.style.backgroundColor = "green"
-         e.target.style.color = "white"
-         e.target.addEventListener("click", () => {
-               const filtredTodo = savedTodo.filter(
-                  (item) => item.id === Number(parentEl.id)
-               );
-               const updateFiltredTodo = {
-                  ...filtredTodo[0],
-                  todoDescpar: parentEl.children[0].children[1].children[0].value
-               };
-      
-               const filtredTodos = savedTodo.filter(
-                  (item) => item.id !== Number(parentEl.id)
-               );
-               const updateFilteredTodoSave = [...filtredTodos, updateFiltredTodo];
-               localStorage.setItem("todolist", JSON.stringify(updateFilteredTodoSave));
-               location.reload();
-            })
-
-
+         location.reload();       
       })
 
-
-      
-      
-    
    }
-
 })
