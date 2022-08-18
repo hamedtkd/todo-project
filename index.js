@@ -6,7 +6,7 @@ const alertTodo = document.getElementById("alertTodo");
 
 function getLsItems() {
    let savedLcTodo = localStorage.getItem("todolist");
-   return JSON.parse(savedLcTodo).sort((a,b) => a.id - b.id) || [];
+   return JSON.parse(savedLcTodo)?.sort((a,b) => a.id - b.id) || [];
 }
 
 const savedTodo = [...getLsItems()];
