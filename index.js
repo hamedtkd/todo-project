@@ -1,11 +1,15 @@
 const todoTitle = document.getElementById("todoTitel");
 const todoDesc = document.getElementById("todoDesc");
 const todoSubmit = document.getElementById("todoSubmit");
-const maintodo = document.getElementById("mainTodo");
+const mainTodo = document.getElementById("mainTodo");
 const alertTodo = document.getElementById("alertTodo");
-let savedLcTodo = localStorage.getItem("todolist");
-const parseSavedTodo = JSON.parse(savedLcTodo) || [];
-const savedTodo = [...parseSavedTodo];
+
+function getLsItems() {
+   let savedLcTodo = localStorage.getItem("todolist");
+   return JSON.parse(savedLcTodo).sort((a,b) => a.id - b.id) || [];
+}
+
+const savedTodo = [...getLsItems()];
 
 const alertForNull = (massage, option) => {
 
@@ -70,8 +74,8 @@ const creatNewTodo = (title, desc, id, cheked) => {
    inputParagraph.disabled = true;
    inputParagraph.className = 'INPUT-TITLE';
    pargraph.appendChild(inputParagraph);
-   inputParagraph.value =  desc;
- 
+   inputParagraph.value = desc;
+
 
    const deleteBtn = document.createElement("button");
    deleteBtn.innerHTML = actionBtns.delete;
@@ -99,7 +103,7 @@ const creatNewTodo = (title, desc, id, cheked) => {
    divisonOfbtns.appendChild(editBtn)
    divisonOfbtns.appendChild(updateBtn)
 
-   maintodo.appendChild(listItem);
+   mainTodo.appendChild(listItem);
    listItem.className = "list-item-todo"
    divisonOfbtns.className = "action-btn"
    deleteBtn.className = "btn btn-outline-danger px-3"
@@ -108,41 +112,45 @@ const creatNewTodo = (title, desc, id, cheked) => {
 
 }
 
-
-savedTodo.forEach(todo => {
-   creatNewTodo(todo.todoTitleHead, todo.todoDescpar, todo.id, todo.cheked)
-})
+function render() {
+   getLsItems().forEach(todo => {
+      creatNewTodo(todo.todoTitleHead, todo.todoDescpar, todo.id, todo.cheked)
+   })
+}
+render()
 
 
 todoSubmit.addEventListener("click", handelNewTodo)
 
 
 
-maintodo.addEventListener('click', (e) => {
+mainTodo.addEventListener('click', (e) => {
 
    if (e.target.innerText === "Delete") {
       const parentEl = e.target.parentElement.parentElement.id;
-      const filteredSaveTodo = savedTodo.filter((item) => item.id !== Number(parentEl));
+      const filteredSaveTodo = getLsItems().filter((item) => item.id !== Number(parentEl));
       localStorage.setItem('todolist', JSON.stringify(filteredSaveTodo));
-      location.reload();
+      mainTodo.innerHTML = ""
+      render()
    } else if (e.target.innerText === "Check") {
       const parentEl = e.target.parentElement.parentElement.id;
-      const filteredSaveTodo = savedTodo.filter((item) => item.id === Number(parentEl));
+      const filteredSaveTodo = getLsItems().filter((item) => item.id === Number(parentEl));
       const updateFilteredTodo = {
          ...filteredSaveTodo[0],
          cheked: true
       }
-      const filteredSaveTodos = savedTodo.filter((item) => item.id !== Number(parentEl));
+      const filteredSaveTodos = getLsItems().filter((item) => item.id !== Number(parentEl));
       const updateFilteredTodoSave = [...filteredSaveTodos, updateFilteredTodo]
 
 
       localStorage.setItem('todolist', JSON.stringify(updateFilteredTodoSave));
-      location.reload();
+      mainTodo.innerHTML = ""
+      render()
 
 
    } else if (e.target.innerText === "Edit") {
       const parentEl = e.target.parentElement.parentElement;
-    
+
       parentEl.children[0].children[0].children[0].disabled = false;
       parentEl.children[0].children[1].children[0].disabled = false
       parentEl.children[0].children[0].children[0].style.width = "100%"
@@ -150,27 +158,29 @@ maintodo.addEventListener('click', (e) => {
       parentEl.children[0].children[1].children[0].style.width = "100%"
       parentEl.children[0].children[1].children[0].style.backgroundColor = "#e9ecef"
       parentEl.children[0].children[0].children[0].select();
-   
+
+
       e.target.innerText = "Save";
       e.target.style.backgroundColor = "green"
       e.target.style.color = "white"
 
       e.target.addEventListener("click", () => {
-         const filtredTodo = savedTodo.filter(
+         const filtredTodo = getLsItems().filter(
             (item) => item.id === Number(parentEl.id)
          );
          const updateFiltredTodo = {
             ...filtredTodo[0],
-            todoTitleHead: parentEl.children[0].children[0].children[0].value
-            ,todoDescpar: parentEl.children[0].children[1].children[0].value
+            todoTitleHead: parentEl.children[0].children[0].children[0].value,
+            todoDescpar: parentEl.children[0].children[1].children[0].value
          };
 
-         const filtredTodos = savedTodo.filter(
+         const filtredTodos = getLsItems().filter(
             (item) => item.id !== Number(parentEl.id)
          );
          const updateFilteredTodoSave = [...filtredTodos, updateFiltredTodo];
          localStorage.setItem("todolist", JSON.stringify(updateFilteredTodoSave));
-         location.reload();       
+         mainTodo.innerHTML = ""
+         render()
       })
 
    }
