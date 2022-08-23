@@ -6,7 +6,7 @@ const alertTodo = document.getElementById("alertTodo");
 
 function getLsItems() {
    let savedLcTodo = localStorage.getItem("todolist");
-   return JSON.parse(savedLcTodo)?.sort((a,b) => a.id - b.id) || [];
+   return JSON.parse(savedLcTodo) ?.sort((a, b) => a.id - b.id) || [];
 }
 
 const savedTodo = [...getLsItems()];
@@ -79,12 +79,16 @@ const creatNewTodo = (title, desc, id, cheked) => {
 
    const deleteBtn = document.createElement("button");
    deleteBtn.innerHTML = actionBtns.delete;
+   deleteBtn.id = id
 
    const editBtn = document.createElement("button")
    editBtn.innerHTML = actionBtns.edit;
+   editBtn.id = id
 
    const updateBtn = document.createElement("button")
    updateBtn.innerHTML = actionBtns.chek;
+   updateBtn.id = id
+
    if (cheked) {
       updateBtn.innerHTML = "Cheked"
       updateBtn.style.background = "green"
@@ -125,21 +129,21 @@ todoSubmit.addEventListener("click", handelNewTodo)
 
 
 mainTodo.addEventListener('click', (e) => {
-
+   const id = e.target.id
    if (e.target.innerText === "Delete") {
-      const parentEl = e.target.parentElement.parentElement.id;
-      const filteredSaveTodo = getLsItems().filter((item) => item.id !== Number(parentEl));
+    
+      const filteredSaveTodo = getLsItems().filter((item) => item.id !== Number(id ));
       localStorage.setItem('todolist', JSON.stringify(filteredSaveTodo));
       mainTodo.innerHTML = ""
       render()
    } else if (e.target.innerText === "Check") {
-      const parentEl = e.target.parentElement.parentElement.id;
-      const filteredSaveTodo = getLsItems().filter((item) => item.id === Number(parentEl));
+   
+      const filteredSaveTodo = getLsItems().filter((item) => item.id === Number(id ));
       const updateFilteredTodo = {
          ...filteredSaveTodo[0],
          cheked: true
       }
-      const filteredSaveTodos = getLsItems().filter((item) => item.id !== Number(parentEl));
+      const filteredSaveTodos = getLsItems().filter((item) => item.id !== Number(id ));
       const updateFilteredTodoSave = [...filteredSaveTodos, updateFilteredTodo]
 
 
@@ -166,7 +170,7 @@ mainTodo.addEventListener('click', (e) => {
 
       e.target.addEventListener("click", () => {
          const filtredTodo = getLsItems().filter(
-            (item) => item.id === Number(parentEl.id)
+            (item) => item.id === Number(id)
          );
          const updateFiltredTodo = {
             ...filtredTodo[0],
@@ -175,7 +179,7 @@ mainTodo.addEventListener('click', (e) => {
          };
 
          const filtredTodos = getLsItems().filter(
-            (item) => item.id !== Number(parentEl.id)
+            (item) => item.id !== Number(id)
          );
          const updateFilteredTodoSave = [...filtredTodos, updateFiltredTodo];
          localStorage.setItem("todolist", JSON.stringify(updateFilteredTodoSave));
