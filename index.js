@@ -9,7 +9,7 @@ function getLsItems() {
    return JSON.parse(savedLcTodo) ?.sort((a, b) => a.id - b.id) || [];
 }
 
-const savedTodo = [...getLsItems()];
+let savedTodo = [...getLsItems()];
 
 const alertForNull = (massage, option) => {
 
@@ -133,8 +133,10 @@ mainTodo.addEventListener('click', (e) => {
    if (e.target.innerText === "Delete") {
     
       const filteredSaveTodo = getLsItems().filter((item) => item.id !== Number(id ));
+      savedTodo = [...filteredSaveTodo];
       localStorage.setItem('todolist', JSON.stringify(filteredSaveTodo));
       mainTodo.innerHTML = ""
+
       render()
    } else if (e.target.innerText === "Check") {
    
