@@ -14,12 +14,12 @@ let savedTodo = [...getLsItems()];
 const alertForNull = (massage, option) => {
 
    alertTodo.style.right = "0%"
+   alertTodo.children[0].innerHTML = massage;
    alertTodo.children[1].addEventListener('click', () => {
       alertTodo.style.right = "100%";
    });
    setTimeout(function () {
       alertTodo.style.right = "100%";
-      alertTodo.children[0].innerHTML = massage;
 
 
 
@@ -47,7 +47,7 @@ const handelNewTodo = (event) => {
    localStorage.setItem("todolist", JSON.stringify(savedTodo));
 
 
-   creatNewTodo(newTodo.todoTitleHead, newTodo.todoDescpar, newTodo.id)
+   creatNewTodo(newTodo.todoTitleHead, newTodo.todoDescpar, newTodo.id, newTodo.cheked)
 
 
 }
